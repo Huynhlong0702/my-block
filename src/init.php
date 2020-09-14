@@ -12,12 +12,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function my_block_cgb_block_assets() { // phpcs:ignore
 	// Register block styles for both frontend + backend.
-	wp_register_style(
-		'my_block-cgb-style-css', // Handle.
-		plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ), // Block style CSS.
-		is_admin() ? array( 'wp-editor' ) : null, // Dependency to include the CSS after it.
-		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: File modification time.
-	);
+	// wp_register_style(
+	// 	'my_block-cgb-style-css', // Handle.
+	// 	plugins_url( 'dist/blocks.style.build.css', dirname( __FILE__ ) ), // Block style CSS.
+	// 	is_admin() ? array( 'wp-editor' ) : null, // Dependency to include the CSS after it.
+	// 	null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.style.build.css' ) // Version: File modification time.
+	// );
 
 	// Register block editor script for backend.
 	wp_register_script(
@@ -35,12 +35,12 @@ function my_block_cgb_block_assets() { // phpcs:ignore
 	);
 
 	// Register block editor styles for backend.
-	wp_register_style(
-		'my_block-cgb-block-editor-css', // Handle.
-		plugins_url( 'dist/blocks.editor.build.css', dirname( __FILE__ ) ), // Block editor CSS.
-		array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
-		null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
-	);
+	// wp_register_style(
+	// 	'my_block-cgb-block-editor-css', // Handle.
+	// 	plugins_url( 'dist/blocks.editor.build.css', dirname( __FILE__ ) ), // Block editor CSS.
+	// 	array( 'wp-edit-blocks' ), // Dependency to include the CSS after it.
+	// 	null // filemtime( plugin_dir_path( __DIR__ ) . 'dist/blocks.editor.build.css' ) // Version: File modification time.
+	// );
 
 	// WP Localized globals. Use dynamic PHP stuff in JavaScript via `cgbGlobal` object.
 	wp_localize_script(
@@ -69,12 +69,73 @@ function my_block_cgb_block_assets() { // phpcs:ignore
 	);
 
 	register_block_type(
+		'myblock/block-review',
+		array(
+			'editor_script' => 'my_block-cgb-block-js',
+			
+		)
+	);	
+
+	register_block_type(
+		'myblock/block-featured',
+		array(
+			'editor_script' => 'my_block-cgb-block-js',
+			
+		)
+	);
+
+	register_block_type(
+		'myblock/block-test',
+		array(
+			
+			'editor_script' => 'my_block-cgb-block-js',
+			// 'render_callback' => function( $attributes ){
+			// 	ob_start();
+			// 	var_dump($attributes);
+			// 	return ob_get_clean();
+			// }
+		)
+	);
+
+	register_block_type(
 		'myblock/block-blog',
 		array(
 			
 			'editor_script' => 'my_block-cgb-block-js',
 			'editor_style'  => 'my_block-cgb-block-editor-css',
 			'style'         => 'my_block-cgb-style-css',
+
+			// attributes: {
+		 //        title: {
+		 //            type: 'string',
+		 //            source: 'text',
+		 //            default: '',
+		 //            selector: '.title',
+		 //        },
+		 //        position: {
+		 //            type: 'string',
+		 //            source: 'text',
+		 //            default: '',
+		 //            selector: '.position',
+		 //        },
+		 //        content: {
+		 //            type: 'string',
+		 //            source: 'text',
+		 //            default: '',
+		 //            selector: '.description',
+		 //        },
+		 //        icon: {
+		 //            type: 'string',
+		 //            attribute: 'src',
+		 //            selector: '.number-icon',
+		 //        }
+		 //    },
+
+			'attributes' => array(
+				'title' => array(
+					'type' => 'string'
+				),
+			),
 
 			'render_callback' => function( $attributes ){
 				$args = array(

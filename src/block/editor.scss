@@ -13,3 +13,28 @@
   max-width: 740px;
   padding: 2rem;
 }
+
+
+.wp-featured-number {
+    position: relative;
+    float: left;
+    z-index: 4;
+}
+
+.wp-featured-content {
+    overflow: hidden;
+    padding-top: 20px;
+    color: #474b68;
+    position: relative;
+    left: -20px;
+}
+
+.wp-featured-content:hover h3 {
+    color: #c1351f;
+    transition: all .2s ease;
+}
+
+.wp-featured-content p {
+    margin-top: 10px;
+    display: inline-block;
+}

@@ -117,7 +117,7 @@ registerBlockType('myblock/block-heading', {
 
 
                 </InspectorControls>
-                <div className={ className }>
+                <div>
                     <div className="title" style={{ color: titleColor, fontSize: titleFontSize }}>
                         { title }
                     </div>
@@ -136,7 +136,7 @@ registerBlockType('myblock/block-heading', {
         const { title, titleColor, titleFontSize, subTitle ,description } = attributes;
 
         return (
-            <div className={ className }>
+            <div>
                 <div className="title" style={{ color: titleColor, fontSize: titleFontSize }}> { title } </div>
                 <div className="sub-title"> { subTitle } </div> 
                 <p className="description">{ description }</p>

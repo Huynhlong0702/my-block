@@ -52,8 +52,6 @@ registerBlockType('myblock/block-featured', {
 
         const { attributes: { title, content, icon, imageID } , setAttributes, className  } = props;
 
-        console.log('edit', props);
-
         const getImageButton = (openEvent) => {
             if( icon ) {
                 return (
@@ -113,14 +111,16 @@ registerBlockType('myblock/block-featured', {
 
                 </InspectorControls>
 
-                <div class="wpb_wrapper">
-                	<div class="wp-featured-number">
-                		<img class="number-icon" src={ icon } width="68" height="61" />
-                	</div>
-               		<div class="wp-featured-content">
-                		<h3 className="title">{ title }</h3>
-                		<p className="description">{ content }</p>
-                	</div>
+                <div class="wpb_wrapper" style={{ backgroundColor: '#fafafa', padding: '30px' }}>
+                    <div class="wp-featured-number">
+                        {
+                            icon && <img class="number-icon" src={ icon } width="68" height="61" />
+                        }
+                    </div>
+                    <div class="wp-featured-content">
+                        { title && <h3 className="title">{ title }</h3> }
+                        { content && <p className="description">{ content }</p> }
+                    </div>
                 </div>
             </div>
         );
@@ -129,16 +129,17 @@ registerBlockType('myblock/block-featured', {
     save: (props) => {
 
         const { attributes: { title, content, icon, imageID } , className  } = props;
-        console.log('save',props);
 
         return (
             <div class="wpb_wrapper">
             	<div class="wp-featured-number">
-            		<img class="number-icon" src={ icon } width="68" height="61" />
+                    {
+                        icon && <img class="number-icon" src={ icon } width="68" height="61" />
+                    }
             	</div>
            		<div class="wp-featured-content">
-            		<h3 className="title">{ title }</h3>
-            		<p className="description">{ content }</p>
+            		{ title && <h3 className="title">{ title }</h3> }
+            		{ content && <p className="description">{ content }</p> }
             	</div>
             </div>
         );

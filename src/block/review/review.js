@@ -121,11 +121,13 @@ registerBlockType('myblock/block-review', {
                     </PanelBody>
 
                 </InspectorControls>
-                <div className="wp-review-content" style={{ textAlign: 'center' }}>
+                <div className="wp-review-content" style={{ textAlign: 'center', backgroundColor: '#fafafa', padding: '15' }}>
                     <p className="description review" style={{ fontSize: 22, lineHeight: 1.6, letterSpacing: 0.4, textAlign: 'center', color: '#3a393d', fontWeight: '600' }}>{ content }</p> 
                     <div className="wp-review-des">
                         <p><img src={ avatar } className="avatar" /></p>
-                        <h5 className="name">{ name }</h5>
+
+                       {name &&  <h5 className="name">{ name }</h5> }
+
                         <p><span className="position des" style={{ color: '#474b68', fontSize: 16 }}>{ position }</span></p>
                     </div>
                 </div>
@@ -140,11 +142,11 @@ registerBlockType('myblock/block-review', {
 
         return (
             <div className="wp-review-content text-center">
-                <p className="description review">{ content }</p>
+                { content && <p className="description review">{ content }</p> }
                 <div className="wp-review-des">
-                    <p><img src={ avatar } className="avatar" /></p>
-                    <h5 className="name">{ name }</h5>
-                    <p><span className="position des">{ position }</span></p>
+                    { avatar && <p><img src={ avatar } className="avatar" /></p> }
+                    { name && <h5 className="name">{ name }</h5> }
+                    { position && <p><span className="position des">{ position }</span></p> }
                 </div>
             </div>
         );

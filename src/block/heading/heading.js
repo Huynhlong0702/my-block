@@ -1,146 +1,129 @@
 const { __ } = wp.i18n;
 
+import classnames from "classnames";
+
 const { registerBlockType } = wp.blocks;
 
-const {
-    InspectorControls
-} = wp.editor;
+const { InspectorControls } = wp.editor;
 
 const {
-    PanelBody,
-    TextareaControl,
-    ColorPalette,
-    FontSizePicker,
+	PanelBody,
+	TextareaControl,
+	SelectControl,
+	TextControl,
 } = wp.components;
 
+const { Component } = wp.element;
 
-registerBlockType('myblock/block-heading', {
-    title: __('Enouvo - Heading'),
-    icon: 'wordpress',
-    category: 'formatting',
-    attributes: {
-        title: {
-            type: 'string',
-            default: '',
-            source: 'text',
-            selector: '.title',
-        },
-        titleColor: {
-            type: 'array',
-            default: '#f00',
-        },
-        titleFontSize: {
-            type: 'array',
-            default: 16,
-        },
-        subTitle: {
-            type: 'string',
-            default: '',
-            source: 'text',
-            selector: '.sub-title',
-        },
-        description: {
-            type: 'string',
-            default: '',
-            source: 'text',
-            selector: '.description',
-        }
-    },
+class HeadingBlockEdit extends Component {
+	render() {
+		const {
+			attributes: { title, subTitle, description, align },
+			setAttributes,
+		} = this.props;
 
-    edit: ( props ) => {
+		const styleClass = align != null ? "text-" + align : "";
 
-        const { attributes, setAttributes, className  } = props;
-        const { title, titleColor, titleFontSize, subTitle, description } = attributes;
+		console.log(align, styleClass);
 
-        const titleColors = [
-            { name: 'Custom', color: '#007cba' },
-            { name: 'Custom', color: '#006ba1' },
-            { name: 'Custom', color: '#005a87' },
-        ];
+		return (
+			<div style={{ backgroundColor: "#fafafa", padding: "15px" }}>
+				<InspectorControls>
+					<PanelBody title={"Title"} initialOpen={true}>
+						<TextareaControl
+							label="Title"
+							value={title}
+							onChange={(newTitle) => setAttributes({ title: newTitle })}
+						/>
+					</PanelBody>
 
-        const titleFontSizes = [
-            {
-                name: __( 'Small' ),
-                slug: 'small',
-                size: 12,
-            },
-            {
-                name: __( 'Big' ),
-                slug: 'big',
-                size: 26,
-            },
-        ];
+					<PanelBody title={"Sub Title"} initialOpen={false}>
+						<TextareaControl
+							label="Sub Title"
+							value={subTitle}
+							onChange={(newSubtitle) =>
+								setAttributes({ subTitle: newSubtitle })
+							}
+						/>
+					</PanelBody>
 
-        const fallbackFontSize = 16;
+					<PanelBody title={"Description"} initialOpen={false}>
+						<TextareaControl
+							label="Description"
+							value={description}
+							onChange={(newDes) => setAttributes({ description: newDes })}
+						/>
+					</PanelBody>
 
-        console.log(attributes);
+					<PanelBody>
+						<SelectControl
+							label="Align"
+							value={align}
+							options={[
+								{ label: "Left", value: "left" },
+								{ label: "Center", value: "center" },
+								{ label: "Right", value: "right" },
+							]}
+							onChange={(newstyle) => {
+								setAttributes({ align: newstyle });
+							}}
+						/>
+					</PanelBody>
+				</InspectorControls>
 
-        return (
-            <div>
-                <InspectorControls>
-                    <PanelBody title={ 'Title' } initialOpen={ false }>
-                        <TextareaControl
-                            label="Title"
-                            value={title}
-                            onChange={(val) => setAttributes({ title: val }) }
-                        />
-                        <ColorPalette 
-                            colors={ titleColors }
-                            value={ titleColor }
-                            onChange={ ( val ) => setAttributes( { titleColor: val } ) }
-                        />
-                        <FontSizePicker
-                            fontSizes={ titleFontSizes }
-                            value={ titleFontSize }
-                            fallbackFontSize={ fallbackFontSize }
-                            onChange={ ( val ) => {
-                                setAttributes( { titleFontSize: val } );
-                            } }
-                        />
-                    </PanelBody>
+				<div className={classnames("heading-title", "margin", styleClass)}>
+					<h2 className="fw800">{title}</h2>
+					{description && <h3 className="sub-heading  fw400">{description}</h3>}
+				</div>
+			</div>
+		);
+	}
+}
 
-                    <PanelBody title={ 'Sub Title' } initialOpen={ false }>
-                        <TextareaControl
-                            label="Sub Title"
-                            value={subTitle}
-                            onChange={(val) => setAttributes({ subTitle: val }) }
-                        />
-                    </PanelBody>
+registerBlockType("myblock/block-heading", {
+	title: __("Enouvo - Heading"),
+	icon: "wordpress",
+	category: "formatting",
+	attributes: {
+		title: {
+			type: "string",
+			default: "",
+			source: "text",
+			selector: " h2",
+		},
+		subTitle: {
+			type: "string",
+			default: "",
+			source: "text",
+			// selector: '.sub-heading',
+		},
+		description: {
+			type: "string",
+			default: "",
+			source: "text",
+			selector: ".sub-heading",
+		},
+		align: {
+			type: "string",
+			default: "left",
+		},
+	},
 
-                    <PanelBody title={ 'Description' } initialOpen={ false }>
-                        <TextareaControl
-                            label="Description"
-                            value={description}
-                            onChange={(val) => setAttributes({ description: val }) }
-                        />
-                    </PanelBody>
+	edit: HeadingBlockEdit,
 
+	save: (props) => {
+		const {
+			attributes: { title, subTitle, description, align },
+			setAttributes,
+		} = this.props;
 
-                </InspectorControls>
-                <div>
-                    <div className="title" style={{ color: titleColor, fontSize: titleFontSize }}>
-                        { title }
-                    </div>
-                    <div className="sub-title">
-                        { subTitle }
-                    </div>
-                    <p className="description">{ description }</p>
-                </div>
-            </div>
-        );
-    },
+		const styleClass = align != null ? "text-" + align : "";
 
-    save: (props) => {
-
-        const { attributes, className  } = props;
-        const { title, titleColor, titleFontSize, subTitle ,description } = attributes;
-
-        return (
-            <div>
-                <div className="title" style={{ color: titleColor, fontSize: titleFontSize }}> { title } </div>
-                <div className="sub-title"> { subTitle } </div> 
-                <p className="description">{ description }</p>
-            </div>
-        );
-    }
+		return (
+			<div className={classnames("heading-title", "margin", styleClass)}>
+				<h2 className="fw800">{title}</h2>
+				{description && <h3 className="sub-heading  fw400">{description}</h3>}
+			</div>
+		);
+	},
 });
